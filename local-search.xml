@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>lottery</title>
+    <link href="/2022/12/11/lottery/"/>
+    <url>/2022/12/11/lottery/</url>
+    
+    <content type="html"><![CDATA[<h2 id="代码审计篇："><a href="#代码审计篇：" class="headerlink" title="代码审计篇："></a>代码审计篇：</h2><p>题目首页是</p><p><img src="/2022/12/11/lottery/image-20221211142926022.png" alt="image-20221211142926022"></p><p>点击右上角的Register，可以注册一个用户</p><p><img src="/2022/12/11/lottery/image-20221211143008502.png" alt="image-20221211143008502"></p><p>用户初始钱为20，需要去玩彩票才能增长，然后达到一定数量的额度，就可以购买flag</p><p><img src="/2022/12/11/lottery/image-20221211143131221.png" alt="image-20221211143131221"></p><p>扫描目录能够看到&#x2F;.git，使用githack工具把源码dump下来</p><p>接下来，代码审计的目的那就是如何去让用户的钱得到增加</p><p>关键文件是api.php里有一个buy函数</p><p><img src="/2022/12/11/lottery/image-20221211143404388.png" alt="image-20221211143404388"></p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-number">1</span>&gt; 请求要为post<br><span class="hljs-number">2</span>&gt; content-type不能为空<br><span class="hljs-number">3</span>&gt; content-type的类型要是application/json<br></code></pre></td></tr></table></figure><p><img src="/2022/12/11/lottery/image-20221211143519758.png" alt="image-20221211143519758"></p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php">以file_get_contents接收json数据，并赋值给<span class="hljs-variable">$data</span>变量<br></code></pre></td></tr></table></figure><p><img src="/2022/12/11/lottery/image-20221211143613373.png" alt="image-20221211143613373"></p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php">定义了json数据里的参数<br></code></pre></td></tr></table></figure><p><img src="/2022/12/11/lottery/image-20221211143955332.png" alt="image-20221211143955332"></p><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-keyword">action</span>参数的值如果为buy就会进入buy函数<br></code></pre></td></tr></table></figure><p><img src="/2022/12/11/lottery/image-20221211144052138.png" alt="image-20221211144052138"></p><p><img src="/2022/12/11/lottery/image-20221211144118288.png" alt="image-20221211144118288"></p><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">这里可以看见钱有增加<br></code></pre></td></tr></table></figure><p>那么回到上面的一个判断</p><p><img src="/2022/12/11/lottery/image-20221211144202395.png" alt="image-20221211144202395"></p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php">req等于data，也就是这里又添加了一个新的json参数numbers，并且下面还进行了判断，是弱类型判断，既然我们可以自定义参数的值，那么win_numbers里的值我们都不需要去关心，把numbers参数的全部设置成<span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure><p>抓包改一下数据</p><p><img src="/2022/12/11/lottery/image-20221211144733280.png" alt="image-20221211144733280"></p><p>发包</p><p><img src="/2022/12/11/lottery/image-20221211144743038.png" alt="image-20221211144743038"></p><p>多发几次，钱就蹭蹭涨了</p><p>然后再去购买flag</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>CTF 代码审计</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>天权信安</title>
     <link href="/2022/12/09/%E5%A4%A9%E6%9D%83%E4%BF%A1%E5%AE%89/"/>
     <url>/2022/12/09/%E5%A4%A9%E6%9D%83%E4%BF%A1%E5%AE%89/</url>
